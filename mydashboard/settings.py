@@ -16,6 +16,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_COOKIE_DOMAIN = ['.railway.app']
 
 # Application definition
 
