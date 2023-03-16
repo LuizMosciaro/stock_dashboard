@@ -16,7 +16,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_COOKIE_DOMAIN = ['.railway.app']
+CSRF_TRUSTED_ORIGINS = ['stockdashboard-production.up.railway.app']
 
 # Application definition
 
