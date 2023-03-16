@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css"> 
+        .chartBox {
+            width: 800px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+      
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+        const item = [];
+        let prev = 100;
+        for (let i = 0; i < 1000; i++) {
+          prev += 5 - Math.random() * 10;
+          item.push({x: i, y: prev});
+        }
+        
+        const totalDuration = 2000;
+        const delayBetweenPoints = totalDuration / item.length;
+        const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
+        const animation = {
+          x: {
+            type: 'number',
+            easing: 'linear',
+            duration: delayBetweenPoints,
+            from: NaN, // the point is initially skipped
+            delay(ctx) {
+              if (ctx.type !== 'data' || ctx.xStarted) {
+                return 0;
+              }
+              ctx.xStarted = true;
+              return ctx.index * delayBetweenPoints;
+            }
+          },
+          y: {
+            type: 'number',
+            easing: 'linear',
+            duration: delayBetweenPoints,
+            from: previousY,
+            delay(ctx) {
+              if (ctx.type !== 'data' || ctx.yStarted) {
+                return 0;
+              }
+              ctx.yStarted = true;
+              return ctx.index * delayBetweenPoints;
+            }
+          }
+        };
+        
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            datasets: [{
+              borderColor: 'red',
+              borderWidth: 1,
+              radius: 0,
+              data: item,
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            animation:animation,
+            scales: {
+              x: {
+                type: 'linear'
+              }
+            }
+          }
+        });
+      </script>
+</body>
+</html>

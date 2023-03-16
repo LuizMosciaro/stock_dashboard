@@ -1,0 +1,25 @@
+{% extends 'coins/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+
+{% block content %}
+<div class="home-container">
+    <div class="home-card">
+        <h1>Stocks Index Plataform</h1>
+        <h3>Find your favorite stocks</h3>
+        <img src="{% static 'coins/investment.png' %}" alt="investment">
+    </div>
+    <div class="home-card">
+        <h3>AI predictions, intraday market price action, biggest movers, sectors performance, and more.</h3>
+    </div>
+    <div class="home-card">
+        <h3>Overview of the biggest market cap stocks in each sector.</h3>
+    </div>
+    <div class="home-card">
+        <h3>Search for the informations you want anywhere.</h3>
+    </div>
+</div>
+
+{% endblock %}

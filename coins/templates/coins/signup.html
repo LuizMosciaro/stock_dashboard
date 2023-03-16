@@ -1,0 +1,53 @@
+{% extends 'coins/base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+<div>
+    {% for message in messages %}
+        <div class="alert" role="alert" alert-dismissible>
+            <strong>Message:</strong>{{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-span="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor%}
+</div>
+
+<div class="div-container">
+    <form action="/signup/" method="post" class="divForm">
+        <h2 >Create a New Account</h2>
+        {% csrf_token %}
+        <td>
+            <span for="username">Username</span>
+            <input type="text" name="username" id="username">
+        </td>
+        <td>
+            <span for="email">Email</span>
+            <input type="email" name="email" id="email">
+        </td>
+        <td>
+            <span for="firstname">First Name</span>
+            <input type="text" name="firstname" id="firstname">
+        </td>
+        <td>
+            <span for="lastname">Last Name</span>
+            <input type="text" name="lastname" id="lastname">
+        </td>
+        <td>
+            <span for="password1">Password</span>
+            <input type="password" name="password1" id="password1">
+        </td>
+        <td>
+            <span for="password2">Repeat Password</span>
+            <input type="password" name="password2" id="password2">
+        </td>
+        <td>
+            <button type="submit">Create</button>
+        </td>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,263 @@
+/* General */
+html,body {
+    background-color:#303030;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Arial';
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 220px 1fr; /* 220 é o sidnav e o restante a pagina */
+    grid-template-rows: 30px 1fr 30px;
+    grid-template-areas:
+        "header header"
+        "sidenav main"
+        "sidenav footer";
+    height: 100vh;
+}
+
+.header, .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background-color: #3b3b3b;
+    color: #fff;
+    position: relative;
+}
+
+.header {
+    grid-area: header;
+}
+
+.main {
+    display: flex;
+    grid-area: main;
+    background-color: #939393;
+    justify-content: space-between;
+}
+
+.footer {
+    grid-area: footer;
+}
+
+.sidenav {
+    grid-area: sidenav;
+    display: flex; /* Will be hidden on mobile */
+    background-color: #111;
+    flex-direction: column;
+}
+
+.sidenav_list {
+    padding: 0;
+    margin-top: 10px;
+    list-style-type: none;
+}
+
+.sidenav_list_item {
+    padding: 20px 20px 0px 40px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: rgb(255, 174, 0);
+    cursor: pointer;
+}
+
+.div-container {
+    width: 100%;
+}
+
+.main .divForm {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 40%;
+    background: #cecece;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3);
+    border-radius: 40px;
+
+}
+
+.divForm h2 {
+    text-align: center;
+    margin-top: 0.7rem;
+    margin-bottom: 1.5rem;
+}
+
+.divForm span, input {
+    margin: 0 1rem 0 2rem;
+}
+
+.divForm input[type="text"],input[type="email"], input[type="password"] {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid;
+  background: none;
+  margin: 0.9rem 2rem;
+  font-size: 1rem;
+  display: table-cell;
+}
+
+.divForm button {
+    margin: 2rem auto 2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bolder;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.742);
+    width: 40%;
+}
+
+.divForm button:hover {
+    color: rgb(255, 174, 0);
+    cursor: pointer;
+}
+
+
+.home-container {
+    column-count: 2;
+    column-gap: 15px;
+    margin: 10px;   
+}
+
+.home-card img {
+    width: 50%; 
+    height: 50%; 
+    object-fit: contain;
+}
+
+.home-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #cecece;
+    margin-bottom: 20px;
+    -webkit-column-break-inside: avoid;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.home-card:first-child {
+    height: 100%;
+}
+
+.home-card:nth-child(2) {
+    height: 30.7%;
+}
+
+.home-card:nth-child(3) {
+    height: 30.7%;
+}
+.home-card:nth-child(4) {
+    height: 30.7%;
+}
+
+/* Dashboard */
+
+.chartBox {
+    height: auto;
+    width: auto;
+}
+
+.dashForm span, input {
+    margin: 0 1rem 0 2rem;
+}
+
+.dashForm input[type="text"] {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid;
+  background: none;
+  margin: 0.9rem 2rem;
+}
+
+.dashForm button {
+    margin: 1rem 1rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bolder;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.742);
+    width: 80%;
+}
+
+.dashForm button:hover {
+    color: rgb(255, 174, 0);
+    cursor: pointer;
+}
+
+.dashForm select {
+    
+}
+
+
+.div-content {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-areas: 
+            "card1 card2"
+            "card3 card3"
+            "card4 card4"; 
+    padding: 10px;
+    grid-template-columns: 1fr minmax(min-content, 2fr);
+    grid-template-rows: 1fr auto 1fr;
+}
+
+
+.card1,.card2,.card3,.card4 {
+    background-color: #cecece;
+    text-align: center;
+    padding-top: 4rem;
+    width: 100%;
+    background-color: #cecece;
+    -webkit-column-break-inside: avoid;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3);
+}
+
+.card1 {
+    text-align: unset;
+    grid-area: card1;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.card2 {
+    grid-area: card2;
+    width: 40%;
+}
+.card3 {
+    padding: 10px;
+    grid-area: card3;
+}
+.card4 {
+    padding: 10px;
+    grid-area: card4;
+}
+
+.table {
+    text-align: center;
+  }
+  

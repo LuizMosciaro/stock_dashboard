@@ -1,0 +1,213 @@
+{% extends 'coins/base.html' %}
+
+<!--<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />  SE PRECISAR ZERAR CACHE-->
+
+{% block title %}Dashboard{% endblock %}
+
+{% block sidebar %}
+{% if user.is_authenticated %}
+<!-- <script>window.setTimeout(function () {
+        location.reload(true);
+        }, 1000); // refresh/redirect after x seconds. 
+    </script> -->
+
+<div class="sidenav">
+    <ul class="sidenav_list">
+        <li class="sidenav_list_item"><a href="/home">Home</a></li>
+        <li class="sidenav_list_item"><a href="/signout">Logout</a></li>
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+    <div class="div-content">
+        <div class="card1">
+            <h2>Hi, {{firstname}}!</h2>
+            <p>Get informations about your stock</p>
+            <!-- <p>Ticker: {{ symbol }} | Price {{ price }}</p> /-->
+        </div>
+        <div class="card2">
+            <form action="" method="post" class="dashForm">
+                {% csrf_token %}
+                <div class="">
+                    <label for="">Ticker:</label>
+                    <input type="text" id="ticker" name="ticker" required>
+                </div>
+                <div class="rangeButtons">
+                    <label for="">Range:</label>
+                    <select required name="range">
+                        <option value="1d">1 Day</option>
+                        <option value="5d">5 Days</option>
+                        <option value="1mo">1 Month</option>
+                        <option value="3mo">3 Months</option>
+                        <option value="6mo">6 Months</option>
+                        <option value="1y">1 Years</option>
+                        <option value="2y">2 Years</option>
+                        <option value="5y">5 Years</option>
+                        <option value="10y">10 Years</option>
+                        <option value="ytd">Ytd</option>
+                        <option value="max">Max</option>
+                    </select>
+                </div>
+                <div class="intervalButtons">
+                    <label for="">Interval:</label>
+                    <select required name="interval">
+                        <option value="1d">1 Day</option>
+                        <option value="5d">5 Days</option>
+                        <option value="1mo">1 Month</option>
+                        <option value="3mo">3 Months</option>
+                        <option value="6mo">6 Months</option>
+                        <option value="1y">1 Years</option>
+                        <option value="2y">2 Years</option>
+                        <option value="5y">5 Years</option>
+                        <option value="10y">10 Years</option>
+                        <option value="ytd">Ytd</option>
+                        <option value="max">Max</option>
+                    </select>
+                </div>
+
+                <div class="fundamentalsButtons">
+                    <label for="">Fundamentals:</label>
+                    <label for="fundamentals">Yes</label>
+                    <input required type="radio" id="fundamentals" name="fundamentals" value="true">
+                    <label for="fundamentals">No</label>
+                    <input required type="radio" id="fundamentals" name="fundamentals" value="false">
+                </div>
+                <div class="dividendsButtons">
+                    <label for="">Dividends:</label>
+                    <label for="dividends">Yes</label>
+                    <input required type="radio" id="dividendsTrue" name="dividends" value="true">
+                    <label for="dividends">No</label>
+                    <input required type="radio" id="dividendsFalse" name="dividends" value="false">
+                </div>
+                <button type="submit" name="get_price">Get Price</button>
+            </form>
+        </div>
+        {% if resultados %}
+        <div class="card3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Logo</th>
+                        <th>Simbolo</th>
+                        <th>Nome</th>
+                        <th>Preço  [Abertura]</th>
+                        <th>Preço  [Fechamento]</th>
+                        <th>Preço  [Máxima Diária]</th>
+                        <th>Preço  [Mínima Diária]</th>
+                        <th>Preço  [Fechamento Anterior]</th>
+                        <th>Variação % Diária</th>
+                        <th>Volume</th>
+                        <th>Valor de Mercado</th>
+                        <!-- {% if resultados.results.0.dividendsData %}
+                                <th>Dados Dividendos</th>
+                            {% endif %} -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="{{ resultados.results.0.logourl}}" alt="logourl" srcset=""></td>
+                        <td>{{ resultados.results.0.symbol }}</td>
+                        <td>{{ resultados.results.0.longName }}</td>
+                        <td>R${{ resultados.results.0.regularMarketOpen }}</td>
+                        <td>R${{ resultados.results.0.regularMarketPrice }}</td>
+                        <td>R${{ resultados.results.0.regularMarketDayHigh }}</td>
+                        <td>R${{ resultados.results.0.regularMarketDayLow }}</td>
+                        <td>R${{ resultados.results.0.regularMarketPreviousClose }}</td>
+                        <td>{{ resultados.results.0.regularMarketChangePercent|floatformat:2 }}%</td>
+                        <td>R${{ resultados.results.0.marketCap }}</td>
+                        <td>R${{ resultados.results.0.regularMarketVolume }}</td>
+                        <!--<td>{{ resultados.results.0.dividendsData }}</td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card4">
+            <div class="chartBox">
+                <canvas id="myChart"></canvas> <!-- Para poder dar resize, precisa estar numa div sozinho -->
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-animation-delay@1.1.0/dist/chartjs-plugin-animation-delay.min.js"></script>
+            <script>
+                const labels = [{% for item in labels %}"{{ item }}",{% endfor %}];
+                const data = [{% for item in data %}{{ item }}, {% endfor %}];
+                
+                const totalDuration = 4000;
+                const delayBetweenPoints = totalDuration / data.length;
+                const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
+                const animation = {
+                x: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: delayBetweenPoints,
+                    from: NaN, // the point is initially skipped
+                    delay(ctx) {
+                    if (ctx.type !== 'data' || ctx.xStarted) {
+                        return 0;
+                    }
+                    ctx.xStarted = true;
+                    return ctx.index * delayBetweenPoints;
+                    }
+                },
+                y: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: delayBetweenPoints,
+                    from: previousY,
+                    delay(ctx) {
+                    if (ctx.type !== 'data' || ctx.yStarted) {
+                        return 0;
+                    }
+                    ctx.yStarted = true;
+                    return ctx.index * delayBetweenPoints;
+                    }
+                }
+                };
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Cotação Diária - Abertura",
+                            data: data,
+                            backgroundColor: 'rgba(130, 130, 130, 0.2)',
+                            borderColor: 'rgba(130, 130, 130, 1)',
+                            borderWidth: 4,
+                            radius: 1,
+                        }]
+                    },
+                options: {
+                    animation:animation,
+                    maintainAspectRatio: false, 
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                }
+                }); 
+            </script>
+        </div> 
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

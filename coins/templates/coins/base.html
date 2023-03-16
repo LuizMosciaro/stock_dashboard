@@ -1,0 +1,41 @@
+{% load static %}
+<head>
+    <title>{% block title %}My Dashboard{% endblock %}</title>
+    <link rel="stylesheet" type='text/css' href="{% static 'coins/style.css' %}">
+</head>
+
+<body>
+    <div class="grid-container">
+        {% block header %}
+        <header class="header">
+            <h5>A Header</h5>
+            <h5>Items</h5>
+            <h5>Search</h5>
+        </header>
+        {% endblock %}
+        
+        {% block sidebar %}
+        <aside class="sidenav">
+            <ul class="sidenav_list">
+                <li class="sidenav_list_item"><a href="/home">Home</a></li>
+                <li class="sidenav_list_item"><a href="/login_user">Login</a></li>
+                <li class="sidenav_list_item"><a href="/signup">Sign Up</a></li>
+            </ul>
+        </aside>
+        {% endblock %}
+        
+        <main class="main">
+            {% block content %}
+            {% endblock %}
+        </main>
+        
+        {% block footer %}
+        <footer class="footer">
+            <h5>A Footer</h5>
+            <h5>Made with love by Pure Genius</h5>
+        </footer>
+        {% endblock %}
+    </div>
+</body>
+
+</html>
