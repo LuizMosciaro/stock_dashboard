@@ -16,7 +16,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://stockdashboard-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://stockdashboard-production.up.railway.app','https://stocks.amazondeveloper.com.br']
 
 # Application definition
 
